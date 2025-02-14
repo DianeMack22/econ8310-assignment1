@@ -6,17 +6,16 @@ from pygam import LinearGAM, s
 train_url = "https://github.com/dustywhite7/econ8310-assignment1/raw/main/assignment_data_train.csv"
 df_train = pd.read_csv(train_url)
 
-# Ensure 'datetime' column exists before parsing dates
-if 'datetime' in df_train.columns:
-    df_train['datetime'] = pd.to_datetime(df_train['datetime'])
+# Ensure 'Timestamp' column exists before parsing dates
+if 'Timestamp' in df_train.columns:
+    df_train['Timestamp'] = pd.to_datetime(df_train['Timestamp'])
 else:
-    raise ValueError("Column 'datetime' not found in training data.")
+    raise ValueError("Column 'Timestamp' not found in training data.")
 
 def feature_engineering(df):
-    """Extract useful time-based features from datetime."""
-    df['hour'] = df['datetime'].dt.hour
-    df['dayofweek'] = df['datetime'].dt.dayofweek
-    df['month'] = df['datetime'].dt.month
+    """Extract useful time-based features."""
+    df['hour'] = df['hour']
+    df['dayofweek'] = df['Timestamp'].dt.dayofweek
     return df
 
 # Apply feature engineering
@@ -34,11 +33,11 @@ modelFit = model.fit(X_train, y_train)
 test_url = "https://github.com/dustywhite7/econ8310-assignment1/raw/main/assignment_data_test.csv"
 df_test = pd.read_csv(test_url)
 
-# Ensure 'datetime' column exists before parsing dates
-if 'datetime' in df_test.columns:
-    df_test['datetime'] = pd.to_datetime(df_test['datetime'])
+# Ensure 'Timestamp' column exists before parsing dates
+if 'Timestamp' in df_test.columns:
+    df_test['Timestamp'] = pd.to_datetime(df_test['Timestamp'])
 else:
-    raise ValueError("Column 'datetime' not found in test data.")
+    raise ValueError("Column 'Timestamp' not found in test data.")
 
 # Apply feature engineering
 df_test = feature_engineering(df_test)
@@ -51,6 +50,6 @@ pred = modelFit.predict(X_test)
 df_test['predicted_trips'] = pred
 
 # Save predictions to a CSV file
-df_test[['datetime', 'predicted_trips']].to_csv("nyc_taxi_predictions.csv", index=False)
+df_test[['Timestamp', 'predicted_trips']].to_csv("nyc_taxi_predictions.csv", index=False)
 
 print("Model training and prediction complete. Predictions saved to nyc_taxi_predictions.csv.")
