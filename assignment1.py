@@ -4,7 +4,13 @@ from pygam import LinearGAM, s
 
 # Load the training data
 train_url = "https://github.com/dustywhite7/econ8310-assignment1/raw/main/assignment_data_train.csv"
-df_train = pd.read_csv(train_url, parse_dates=['datetime'])
+df_train = pd.read_csv(train_url)
+
+# Ensure 'datetime' column exists before parsing dates
+if 'datetime' in df_train.columns:
+    df_train['datetime'] = pd.to_datetime(df_train['datetime'])
+else:
+    raise ValueError("Column 'datetime' not found in training data.")
 
 def feature_engineering(df):
     """Extract useful time-based features from datetime."""
@@ -26,7 +32,13 @@ modelFit = model.fit(X_train, y_train)
 
 # Load the test dataset
 test_url = "https://github.com/dustywhite7/econ8310-assignment1/raw/main/assignment_data_test.csv"
-df_test = pd.read_csv(test_url, parse_dates=['datetime'])
+df_test = pd.read_csv(test_url)
+
+# Ensure 'datetime' column exists before parsing dates
+if 'datetime' in df_test.columns:
+    df_test['datetime'] = pd.to_datetime(df_test['datetime'])
+else:
+    raise ValueError("Column 'datetime' not found in test data.")
 
 # Apply feature engineering
 df_test = feature_engineering(df_test)
